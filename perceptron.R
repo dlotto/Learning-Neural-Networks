@@ -16,6 +16,8 @@ Perceptron <- R6::R6Class(
       }
     },
     
+    #' @description Tuning all the weights
+    #' @param points_df 
     train = function(points_df){
       # browser()
       points_df %>% 

@@ -22,9 +22,14 @@ Training <- R6::R6Class(
   ),
   
   active = list(
-    #' @description Draw an ellipse
-    show = function(){
+    #' @description Draw a chart with dots that are different colors 
+    show_answers = function(){
       ggplot2::ggplot(self$points, ggplot2::aes(x=x, y=y, color=label)) +
+        ggplot2::geom_point()
+    },
+    
+    show_guesses = function(){
+      ggplot2::ggplot(self$points, ggplot2::aes(x=x, y=y, color=g)) +
         ggplot2::geom_point()
     }
   ),

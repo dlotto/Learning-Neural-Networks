@@ -3,18 +3,68 @@ title: "Learning Neural Networks"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+## What am I doing?
+I want to learn about neural networks. Back in 2018, I came across the YouTube channel "The Coding Train" and really enjoyed watching his videos on Neural Networks. In addition to going over the background of NN, he also constructs basic components in Java. Over a weekend in 2018, I watched the entire series from start to finish. Now in 2021, I have would like to take the next step and follow/build along. This is my attempt to replicate the video series in R.
 
-## R Markdown
+## How and I replicating the series?
+To start off I am going to focus on building the basic component as R6 classes in R files. As it goes on I would like to create a package/library with these components.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Building My First Perceptron in a Feed Forward Process
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Create a new R6 class.
 
 ```{r}
-
-
+Perceptron <- R6::R6Class(
+  "Perceptron",
+  public = list(),
+  active = list(),
+  private = list()
+)
 ```
+
+Now add in the constructor `initialize`, the weights `weights`, and the perceptron `guess`.
+```{r}
+Perceptron <- R6::R6Class(
+  "Perceptron",
+  public = list(
+    #' @field weights array
+    weights = NULL,
+    
+    #' @description Constructor class
+    #' @param l An integer; Number of weights to initialize.
+    initialize = function(l=2){
+      self$weights <- vector("numeric",l)
+      
+      for(i in 1:length(self$weights)){
+        self$weights[i] <- sample(x=c(-1,1),1)
+      }
+    }
+  ),
+  active = list(),
+  private = list(
+    #' @description 
+    #' Will make a guess by using the dot product summation of the inputs and weights 
+    #' and passing that sum to the sign function.
+    guess = function(x0,x1){
+      inputs <- c(x0,x1)
+      # x0*w0 + x1*w1
+      g.sum = sum(inputs*self$weights)
+      
+      private$sign_fn(g.sum)
+    },
+    
+    #' Activation function
+    sign_fn = function(n){
+      if(n >= 0){1}else{-1}
+    }
+  )
+)
+```
+
+You will notice there is one additional function that was created called `sign_fn`.
+
+*The Perceptron Algorithm*
+* For every input, multiply that input by its weight
+* Sum all of the weighted inputs
+* Compute the output of the perceptron based on that sum passed through an activation function (the sign of the sum)
 
